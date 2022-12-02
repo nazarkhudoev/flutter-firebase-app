@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "445601259293",
+    "project_id": "m41-highway",
+    "storage_bucket": "m41-highway.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445601259293:android:b0ae0bb5deeeb9fac90bf4",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445601259293-5nq4a8p9mso3i6g7l1utomunllgh1s1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPvHGbCGu-BHedbZ9vheNm2r70v0U0oWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445601259293-5nq4a8p9mso3i6g7l1utomunllgh1s1c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
