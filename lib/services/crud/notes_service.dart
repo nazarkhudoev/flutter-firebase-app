@@ -1,6 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
@@ -29,11 +28,17 @@ class NotesService {
   }
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
+    log(email);
     try {
+      log('comes here 1');
+
       final user = await getUser(email: email);
+      log(user.toString());
       return user;
-    } on CouldNotFindUser {
+    } on CouldNotFindUser  {
+      log('comes here');
       final createdUser = await createUser(email: email);
+      log(createdUser.toString());
       return createdUser;
     } catch (e) {
       rethrow;
@@ -165,7 +170,7 @@ class NotesService {
     );
 
     if (result.isEmpty) {
-      throw CouldNotFindUser;
+      throw CouldNotFindUser();
     } else {
       return DatabaseUser.fromRow(result.first);
     }
@@ -243,7 +248,7 @@ class NotesService {
       await db.execute(createNoteTable);
       await _casheNotes();
     } on MissingPlatformDirectoryException {
-      throw UnableToGetDocumentsDirectly;
+      throw UnableToGetDocumentsDirectly();
     }
   }
 }
@@ -314,7 +319,7 @@ const textColumn = 'text';
 const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 
 const createUserTable = '''
-        CREATE TABLE IF NOT EXISTS "user " (
+        CREATE TABLE IF NOT EXISTS "user" (
           "id"	INTEGER NOT NULL,
           "email"	TEXT NOT NULL UNIQUE,
           PRIMARY KEY("id" AUTOINCREMENT)
