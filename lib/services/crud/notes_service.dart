@@ -35,7 +35,7 @@ class NotesService {
       final user = await getUser(email: email);
       log(user.toString());
       return user;
-    } on CouldNotFindUser  {
+    } on CouldNotFindUser {
       log('comes here');
       final createdUser = await createUser(email: email);
       log(createdUser.toString());
@@ -84,7 +84,6 @@ class NotesService {
 
   Future<DatabaseNote> getNote({required int id}) async {
     await _enshureDbIsOpen();
-
     final db = _getDatabaseOrThrow();
 
     final notes =
@@ -98,6 +97,7 @@ class NotesService {
       _notes.add(note);
       _notesStreamController.add(_notes);
 
+      log(note.id.toString());
       return note;
     }
   }
@@ -136,10 +136,12 @@ class NotesService {
     final dbUser = await getUser(email: owner.email.toLowerCase());
 
     if (dbUser != owner) {
+      log("not the same user");
       throw CouldNotFindUser();
     }
 
     const text = '';
+    log('Creating-1');
 
     final noteId = await db.insert(
       noteTable,
@@ -155,6 +157,7 @@ class NotesService {
 
     _notes.add(note);
     _notesStreamController.add(_notes);
+    log(note.id.toString());
 
     return note;
   }
@@ -162,12 +165,19 @@ class NotesService {
   Future<DatabaseUser> getUser({required String email}) async {
     await _enshureDbIsOpen();
     final db = _getDatabaseOrThrow();
+
+    log("GET USER 1");
+    log("GET USER EMAIL:" + email);
+
     final result = await db.query(
       userTable,
       limit: 1,
       where: 'email = ?',
       whereArgs: [email.toLowerCase()],
     );
+    log("GET USER 2");
+
+    log("GET USER:" + result.first.toString());
 
     if (result.isEmpty) {
       throw CouldNotFindUser();
@@ -263,7 +273,7 @@ class DatabaseUser {
 
   DatabaseUser.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
-        email = [emailColumn] as String;
+        email = map[emailColumn] as String;
 
   @override
   String toString() => 'Person, ID = $id, email=$email';
@@ -292,7 +302,7 @@ class DatabaseNote {
   DatabaseNote.fromRow(Map<String, Object?> map)
       : id = map[idColumn] as int,
         userId = map[userIdColumn] as int,
-        text = [textColumn] as String,
+        text = map[textColumn] as String,
         isSyncedWithCloud =
             (map[isSyncedWithCloudColumn] as int) == 1 ? true : false;
 
