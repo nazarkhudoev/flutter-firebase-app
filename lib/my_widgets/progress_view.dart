@@ -11,7 +11,6 @@ class _ProgressWState extends State<ProgressW> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('In progress')),
         body: Center(
           child: CircularProgressIndicator(color: Colors.green),
         ));
