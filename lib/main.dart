@@ -6,9 +6,7 @@ import 'package:flutter_application_1/views/login_view.dart';
 import 'package:flutter_application_1/views/notes/create_update_note_view.dart';
 import 'package:flutter_application_1/views/register_view.dart';
 import 'package:flutter_application_1/views/verify_email_view.dart';
-import 'dart:developer' as devtools show log;
 
-import 'firebase_options.dart';
 import 'views/notes/notes_view.dart';
 
 String getFullName(String firstName, String lastName) {
