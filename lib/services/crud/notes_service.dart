@@ -10,13 +10,19 @@ class NotesService {
   Database? _db;
 
   List<DatabaseNote> _notes = [];
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
   //singleton of service in Dark
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NotesService() => _shared;
 
   Future<void> _enshureDbIsOpen() async {
@@ -68,7 +74,7 @@ class NotesService {
       throw CouldNotUpdateNote();
     } else {
       final updatedNote = await getNote(id: note.id);
-      _notes.removeWhere((note) => note.id == note.id);
+      _notes.removeWhere((note) => note.id == updatedNote.id);
       _notes.add(updatedNote);
       _notesStreamController.add(_notes);
       return updatedNote;
@@ -136,7 +142,6 @@ class NotesService {
     final dbUser = await getUser(email: owner.email.toLowerCase());
 
     if (dbUser != owner) {
-      log("not the same user");
       throw CouldNotFindUser();
     }
 
@@ -166,18 +171,12 @@ class NotesService {
     await _enshureDbIsOpen();
     final db = _getDatabaseOrThrow();
 
-    log("GET USER 1");
-    log("GET USER EMAIL:" + email);
-
     final result = await db.query(
       userTable,
       limit: 1,
       where: 'email = ?',
       whereArgs: [email.toLowerCase()],
     );
-    log("GET USER 2");
-
-    log("GET USER:" + result.first.toString());
 
     if (result.isEmpty) {
       throw CouldNotFindUser();
