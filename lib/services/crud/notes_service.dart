@@ -14,7 +14,8 @@ class NotesService {
   late final StreamController<List<DatabaseNote>> _notesStreamController;
 
   DatabaseUser? _user;
-
+//singleton of service in Dark
+  static final NotesService _shared = NotesService._sharedInstance();
   Stream<List<DatabaseNote>> get allNotes =>
       _notesStreamController.stream.filter((note) {
         final currentUser = _user;
@@ -25,8 +26,6 @@ class NotesService {
         }
       });
 
-  //singleton of service in Dark
-  static final NotesService _shared = NotesService._sharedInstance();
   NotesService._sharedInstance() {
     _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
       onListen: () {
