@@ -7,6 +7,10 @@ abstract class AuthState {
   const AuthState();
 }
 
+class AuthStateSplash extends AuthState {
+  const AuthStateSplash();
+}
+
 class AuthStateUninialized extends AuthState {
   const AuthStateUninialized();
 }
@@ -32,7 +36,20 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin {
     required this.exception,
     required this.isLoading,
   });
-  
+
   @override
   List<Object?> get props => [exception, isLoading];
+}
+
+//seach
+
+class AuthStateSeach extends AuthState {
+  final Exception? exception;
+  const AuthStateSeach(this.exception);
+}
+
+//home
+class AuthStateHome extends AuthState {
+  final Exception? exception;
+  const AuthStateHome(this.exception);
 }

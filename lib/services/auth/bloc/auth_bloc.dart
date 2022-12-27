@@ -24,6 +24,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //initialized
     on<AuthEventInitialize>((event, emit) async {
       await provider.initialize();
+      emit(const AuthStateSplash());
+      await Future.delayed(const Duration(seconds: 2));
+
       final user = provider.currentUser;
       if (user == null) {
         emit(
@@ -46,8 +49,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: true,
         ),
       );
+
       final email = event.email;
       final password = event.password;
+
       try {
         final user = await provider.logIn(
           email: email,
@@ -94,10 +99,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       }
     });
-
     //should reg
     on<AuthEventShouldRegister>((event, emit) async {
       emit(const AuthStateRegistering(null));
+    });
+
+    //search
+    on<AuthEventSeach>((event, emit) async {
+      emit(const AuthStateSeach(null));
+    });
+
+    //home
+    on<AuthEventHome>((event, emit) async {
+      emit(const AuthStateHome(null));
     });
   }
 }

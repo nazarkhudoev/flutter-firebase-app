@@ -5,12 +5,12 @@ import 'package:flutter_application_1/utilities/dialogs/delete_dialog.dart';
 
 typedef NoteCallback = void Function(CloudNote note);
 
-class NotesListView extends StatelessWidget {
+class ServiceListView extends StatelessWidget {
   final Iterable<CloudNote> notes;
   final NoteCallback onDeleteNote;
   final NoteCallback onTap;
 
-  const NotesListView({
+  const ServiceListView({
     Key? key,
     required this.notes,
     required this.onDeleteNote,
@@ -27,6 +27,7 @@ class NotesListView extends StatelessWidget {
           onTap: () {
             onTap(note);
           },
+          
           title: Text(
             note.text,
             maxLines: 1,

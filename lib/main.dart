@@ -7,7 +7,9 @@ import 'package:flutter_application_1/services/auth/bloc/auth_state.dart';
 import 'package:flutter_application_1/services/auth/firebase_auth_provider.dart';
 import 'package:flutter_application_1/views/login_view.dart';
 import 'package:flutter_application_1/views/notes/create_update_note_view.dart';
+import 'package:flutter_application_1/views/notes/search_view.dart';
 import 'package:flutter_application_1/views/register_view.dart';
+import 'package:flutter_application_1/views/splash_view.dart';
 import 'package:flutter_application_1/views/verify_email_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,7 +46,9 @@ class HomePage extends StatelessWidget {
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        if (state is AuthStateLoggedIn) {
+        if (state is AuthStateSplash) {
+          return const SplashView();
+        } else if (state is AuthStateLoggedIn) {
           return const NotesView();
         } else if (state is AuthStateNeedsVerification) {
           return const VerifyEmailView();
@@ -52,6 +56,10 @@ class HomePage extends StatelessWidget {
           return const LoginView();
         } else if (state is AuthStateRegistering) {
           return const RegisterView();
+        } else if (state is AuthStateSeach) {
+          return const SearchView();
+        } else if (state is AuthStateHome) {
+          return const NotesView();
         } else {
           return const Scaffold(
             body: progress,

@@ -30,7 +30,34 @@ class FirebaseCloudStorage {
                 .where((note) => note.ownerUserId == ownerUserId),
           );
 
+  Stream<Iterable<CloudNote>> searchNotes(
+          {required String ownerUserId, required String searchText}) =>
+      notes.snapshots().map(
+            (event) => event.docs
+                .map((doc) => CloudNote.fromSnapshot(doc))
+                .where((note) =>
+                    note.ownerUserId == ownerUserId &&
+                    note.text.startsWith(searchText)),
+          );
+
   Future<Iterable<CloudNote>> getNotes({required String ownerUserId}) async {
+    try {
+      return await notes
+          .where(
+            ownerUserIdFieldName,
+            isEqualTo: ownerUserId,
+          )
+          .get()
+          .then(
+            (value) => value.docs.map((doc) => CloudNote.fromSnapshot(doc)),
+          );
+    } catch (e) {
+      throw CouldNotGetAllNotesException();
+    }
+  }
+
+  Future<Iterable<CloudNote>> findNotes(
+      {required String ownerUserId, required String searchText}) async {
     try {
       return await notes
           .where(

@@ -32,3 +32,13 @@ class AuthEventLogOut extends AuthEvent {
 class AuthEventSendEmailVerification extends AuthEvent {
   const AuthEventSendEmailVerification();
 }
+
+//search
+class AuthEventSeach extends AuthEvent {
+  const AuthEventSeach();
+}
+
+//search
+class AuthEventHome extends AuthEvent {
+  const AuthEventHome();
+}
